@@ -1,0 +1,31 @@
+import numpy as np
+matrix = np.array([[10,60],[40,20]])
+print(matrix)
+MAI = matrix.min(axis=1)
+print("min MAI =",MAI)
+O = matrix.max(axis=0)
+print("max O =",O)
+print("Maximin MAI =",MAI.max(),"AND strategy MAI =",np.argmax(MAI)+1)
+print("Minimax O = ",O.min(),"AND strategy O =",np.argmin(O)+1)
+if (MAI.max() == O.min()):
+    print("Pure Strategy")
+    print("Value of the Game = ", MAI.max())
+else:
+    print("Mixed Strategy")
+    m = np.absolute(np.diff(matrix,axis=1))
+    o = np.absolute(np.diff(matrix,axis=0))
+    sumM = m.sum()
+    sumO = o.sum()
+    print("Maximin MAI =",m,"sum MAI =",sumM)
+    print("Minimax O =",o,"sum O =",sumO)
+    m[0,:],m[1,:] = m[1,:].copy(),m[0,:].copy()
+    o[:,0],o[:,1] = o[:,1].copy(),o[:,0].copy()
+    print("SwitchdataMAI =",m)
+    print("SwitchdataO =",o)
+    P,P1 = m[0][0]/sumM,m[1][0]/sumM
+    Q,Q1 = o[0][0]/sumO,o[0][1]/sumO
+    print("MAI strategy 1 =",P,"strategy 2 =",P1)
+    print("O strategy 1 =",Q,"strategy 2 =",Q1)
+    ANS = (Q*((matrix[0][0]*P)+(matrix[1][0]*P1)))+(Q1*((matrix[0][1]*P)+(matrix[1][1]*P1)))
+    print("MAI =",ANS)
+    print("O =",ANS*(-1))
